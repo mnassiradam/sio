@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adam Nassir — Portfolio BTS SIO SISR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-card-hover: #22222f;
+            --border: #2a2a3a;
+            --text-primary: #e8e8ed;
+            --text-secondary: #9898a8;
+            --text-muted: #6b6b7b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --accent-dark: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --cyan: #06b6d4;
+            --purple: #a855f7;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-xs: 6px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="light"] {
+            --bg-primary: #f8f9fc; --bg-secondary: #ffffff; --bg-card: #ffffff;
+            --bg-card-hover: #f0f2f8; --border: #e2e4ea; --text-primary: #1a1a2e;
+            --text-secondary: #5a5a72; --text-muted: #8a8a9e;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08); --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; min-height: 100vh; overflow-x: hidden; }
+
+        /* NAV */
+        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: var(--transition); }
+        [data-theme="light"] .navbar { background: rgba(248,249,252,0.9); }
+        .navbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-weight: 700; font-size: 1.15rem; color: var(--text-primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-logo .logo-badge { background: var(--accent); color: #fff; padding: 4px 10px; border-radius: var(--radius-xs); font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; padding: 0.5rem 0.85rem; border-radius: var(--radius-xs); font-size: 0.85rem; font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-light); background: var(--accent-glow); }
+        .theme-toggle { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: var(--transition); margin-left: 0.75rem; }
+        .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+        .hamburger { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+        /* SECTIONS */
+        .section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-header { margin-bottom: 3.5rem; }
+        .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 1rem; }
+        .section-label::before { content: ''; width: 24px; height: 2px; background: var(--accent); border-radius: 2px; }
+        .section-title { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+        .section-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 600px; }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; right: -30%; width: 800px; height: 800px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; }
+        .hero-content { max-width: 720px; position: relative; z-index: 1; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: var(--accent-glow); border: 1px solid rgba(59,130,246,0.3); border-radius: 100px; font-size: 0.82rem; font-weight: 500; color: var(--accent-light); margin-bottom: 1.5rem; }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.25rem; }
+        .hero h1 .gradient { background: linear-gradient(135deg, var(--accent-light), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-desc { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2.5rem; line-height: 1.8; }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 0.75rem 1.75rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: var(--transition); cursor: pointer; border: none; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,130,246,0.3); }
+        .btn-outline { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-sm { padding: 0.5rem 1.25rem; font-size: 0.8rem; }
+        .hero-stats { display: flex; gap: 3rem; margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+        .stat-item { text-align: left; }
+        .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--accent-light); }
+        .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* ABOUT */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+        .about-text p { color: var(--text-secondary); margin-bottom: 1.25rem; }
+        .info-cards { display: grid; gap: 1rem; }
+        .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; transition: var(--transition); }
+        .info-card:hover { border-color: var(--accent); background: var(--bg-card-hover); }
+        .info-icon { width: 44px; height: 44px; background: var(--accent-glow); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .info-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .info-value { font-size: 0.95rem; font-weight: 600; }
+
+        /* SKILLS */
+        .skills-categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .skill-category { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; transition: var(--transition); }
+        .skill-category:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .skill-cat-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; }
+        .skill-cat-icon.sys { background: rgba(59,130,246,0.15); }
+        .skill-cat-icon.net { background: rgba(6,182,212,0.15); }
+        .skill-cat-icon.sec { background: rgba(168,85,247,0.15); }
+        .skill-category h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .skill-category p { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tech-tag { padding: 5px 14px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 100px; font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition); }
+        .tech-tag:hover { border-color: var(--accent); color: var(--accent-light); }
+
+        /* TIMELINE */
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), var(--purple), transparent); }
+        .timeline-item { position: relative; padding-bottom: 3rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg-primary); transform: translateX(-5px); }
+        .timeline-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-left: 1rem; transition: var(--transition); }
+        .timeline-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+        .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+        .timeline-role { font-size: 1.15rem; font-weight: 700; }
+        .timeline-company { font-size: 0.95rem; color: var(--accent-light); font-weight: 500; }
+        .timeline-date { font-size: 0.82rem; color: var(--text-muted); padding: 4px 12px; background: var(--bg-primary); border-radius: 100px; white-space: nowrap; }
+        .timeline-desc { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 1rem; }
+
+        /* PROJECTS */
+        .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; transition: var(--transition); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .project-card.featured { grid-column: 1 / -1; background: linear-gradient(135deg, var(--bg-card) 0%, rgba(59,130,246,0.05) 100%); border-color: rgba(59,130,246,0.3); }
+        .project-status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 100px; margin-bottom: 1rem; width: fit-content; }
+        .status-done { background: rgba(34,197,94,0.15); color: var(--success); }
+        .project-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .project-card .project-year { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+        .project-card p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem; flex: 1; }
+        .project-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+        .project-competences { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .competence-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; padding: 3px 10px; background: var(--accent-glow); color: var(--accent-light); border-radius: var(--radius-xs); border: 1px solid rgba(59,130,246,0.2); }
+        .btn-pdf { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; border-radius: var(--radius-xs); font-size: 0.78rem; font-weight: 600; text-decoration: none; transition: var(--transition); white-space: nowrap; }
+        .btn-pdf:hover { background: rgba(239,68,68,0.2); border-color: #f87171; transform: translateY(-1px); }
+        .btn-pdf svg { width: 14px; height: 14px; }
+
+        /* CERTIFICATIONS */
+        .certs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .cert-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; display: flex; gap: 1.25rem; align-items: flex-start; transition: var(--transition); }
+        .cert-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .cert-icon { width: 52px; height: 52px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; font-weight: 700; }
+        .cert-icon.cnil { background: rgba(59,130,246,0.15); color: var(--accent); }
+        .cert-icon.anssi { background: rgba(168,85,247,0.15); color: var(--purple); }
+        .cert-name { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .cert-org { font-size: 0.85rem; color: var(--accent-light); margin-bottom: 0.25rem; }
+        .cert-date { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* VEILLE RSS */
+        .veille-content { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .veille-desc { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
+        .veille-desc h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; }
+        .veille-desc p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 1rem; }
+        .rss-feed-live { display: grid; gap: 1rem; }
+        .rss-article { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; transition: var(--transition); text-decoration: none; display: block; }
+        .rss-article:hover { border-color: var(--accent); background: var(--bg-card-hover); transform: translateY(-2px); }
+        .rss-article-source { display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem; }
+        .rss-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .rss-article-source span { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+        .rss-article-title { font-size: 0.92rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem; line-height: 1.4; }
+        .rss-article-date { font-size: 0.75rem; color: var(--text-muted); }
+        .rss-loading { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 0.9rem; }
+        .rss-loading .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* SYNTHESE TABLE */
+        .synthese-wrapper { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 1rem; }
+        .synthese-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .synthese-table thead th { background: var(--accent); color: #fff; padding: 0.9rem 1rem; text-align: center; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-right: 1px solid rgba(255,255,255,0.15); }
+        .synthese-table thead th:first-child { text-align: left; }
+        .synthese-table thead th:last-child { border-right: none; }
+        .synthese-table tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); vertical-align: middle; text-align: center; }
+        .synthese-table tbody td:first-child { text-align: left; font-weight: 500; }
+        .synthese-table tbody td:last-child { border-right: none; }
+        .synthese-table tbody tr { background: var(--bg-card); transition: var(--transition); }
+        .synthese-table tbody tr:hover { background: var(--bg-card-hover); }
+        .synthese-table tbody tr:last-child td { border-bottom: none; }
+        .bloc-header { background: linear-gradient(90deg, var(--bg-secondary), var(--bg-card)) !important; }
+        .bloc-header td { padding: 0.65rem 1rem !important; font-weight: 700; color: var(--accent-light); font-size: 0.85rem; text-align: left !important; }
+        .check { color: var(--success); font-weight: 700; font-size: 1rem; }
+        .sub-header td { background: rgba(59,130,246,0.05); font-weight: 600; font-size: 0.8rem; color: var(--text-secondary); text-align: left !important; }
+        .synthese-download { display: flex; justify-content: flex-end; margin-top: 0.5rem; }
+        .synthese-download a { font-size: 0.75rem; color: var(--text-muted); text-decoration: none; padding: 4px 12px; border: 1px solid var(--border); border-radius: var(--radius-xs); transition: var(--transition); }
+        .synthese-download a:hover { border-color: var(--accent); color: var(--accent-light); }
+
+        /* PDF MODAL */
+        .pdf-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 2rem; }
+        .pdf-overlay.active { display: flex; }
+        .pdf-viewer { width: 100%; max-width: 900px; height: 85vh; border-radius: var(--radius); overflow: hidden; position: relative; background: var(--bg-card); border: 1px solid var(--border); }
+        .pdf-viewer iframe { width: 100%; height: 100%; border: none; }
+        .pdf-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; background: var(--bg-primary); border: 1px solid var(--border); color: var(--text-primary); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: var(--transition); }
+        .pdf-close:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+        /* FOOTER */
+        .footer { border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; }
+        .footer-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .footer-nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.88rem; transition: var(--transition); }
+        .footer-nav a:hover { color: var(--accent-light); }
+        .footer-info { color: var(--text-muted); font-size: 0.82rem; }
+        .footer-info a { color: var(--accent-light); text-decoration: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.5rem; }
+            .about-grid, .veille-content { grid-template-columns: 1fr; }
+            .skills-categories { grid-template-columns: 1fr 1fr; }
+            .projects-grid, .certs-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 2rem; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+            .skills-categories { grid-template-columns: 1fr; }
+            .section { padding: 4rem 1.25rem; }
+            .section-title { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="#hero" class="nav-logo">Adam Nassir <span class="logo-badge">SIO SISR</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Accueil</a></li>
+                <li><a href="#about">Profil</a></li>
+                <li><a href="#experience">Expériences</a></li>
+                <li><a href="#projects">Réalisations</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#veille">Veille</a></li>
+                <li><a href="#synthese">Synthèse</a></li>
+            </ul>
+            <div style="display:flex;align-items:center;">
+                <button class="theme-toggle" id="themeToggle" aria-label="Thème">&#9788;</button>
+                <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PDF VIEWER MODAL -->
+    <div class="pdf-overlay" id="pdfOverlay">
+        <div class="pdf-viewer">
+            <button class="pdf-close" id="pdfClose">&times;</button>
+            <iframe id="pdfFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge"><span class="dot"></span>BTS SIO SISR — Session 2026</div>
+            <h1>Adam <span class="gradient">Nassir</span></h1>
+            <p class="hero-desc">Étudiant en BTS Services Informatiques aux Organisations, option SISR. Spécialisé en cybersécurité, infrastructures réseaux et haute disponibilité.</p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary">&#9654; Mes réalisations</a>
+                <a href="https://www.linkedin.com/in/adam-nassir-9104b4327/" target="_blank" class="btn btn-outline">LinkedIn &#8599;</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><div class="stat-value">8+</div><div class="stat-label">Projets réalisés</div></div>
+                <div class="stat-item"><div class="stat-value">2</div><div class="stat-label">Certifications</div></div>
+                <div class="stat-item"><div class="stat-value">2 ans</div><div class="stat-label">Formation BTS</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <div class="section-header">
+            <div class="section-label">Profil</div>
+            <h2 class="section-title">Qui suis-je ?</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>Actuellement en deuxième année de BTS SIO option SISR à l'école ESUP, je me spécialise dans la cybersécurité et les infrastructures réseaux. Mon approche combine performance opérationnelle et protection proactive des actifs critiques.</p>
+                <p>Au cours de ma formation, j'ai développé une expertise en conception d'architectures résilientes, en sécurisation des systèmes d'information et en administration de réseaux critiques avec une priorité sur la continuité de service.</p>
+                <p>Ma première année en alternance chez Nova-IP m'a permis d'acquérir une solide expérience en vidéosurveillance IP et en administration réseau. Ma deuxième année est marquée par un stage au SOC de Derichebourg Environnement, où j'ai travaillé sur la détection d'incidents et la réponse aux cyberattaques.</p>
+            </div>
+            <div class="info-cards">
+                <div class="info-card"><div class="info-icon">&#127891;</div><div><div class="info-label">Formation</div><div class="info-value">BTS SIO SISR — ESUP</div></div></div>
+                <div class="info-card"><div class="info-icon">&#128187;</div><div><div class="info-label">Alternance 1<sup>ère</sup> année</div><div class="info-value">Nova-IP — Vidéosurveillance & Dev Web</div></div></div>
+                <div class="info-card"><div class="info-icon">&#128737;</div><div><div class="info-label">Stage 2<sup>ème</sup> année</div><div class="info-value">Derichebourg — Analyste SOC</div></div></div>
+                <div class="info-card"><div class="info-icon">&#128205;</div><div><div class="info-label">Localisation</div><div class="info-value">Paris et périphérie</div></div></div>
+                <div class="info-card"><div class="info-icon">&#9993;</div><div><div class="info-label">Contact</div><div class="info-value">nassir.zad@gmail.com</div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+        <div class="section-header">
+            <div class="section-label">Compétences</div>
+            <h2 class="section-title">Expertise technique</h2>
+            <p class="section-subtitle">Systèmes, réseaux, sécurité — les trois piliers de mon profil SISR.</p>
+        </div>
+        <div class="skills-categories">
+            <div class="skill-category">
+                <div class="skill-cat-icon sys">&#9881;</div>
+                <h3>Administration Systèmes</h3>
+                <p>Conception, déploiement et gestion de serveurs physiques et virtualisés. Automatisation via PowerShell et Bash.</p>
+                <div class="tech-tags"><span class="tech-tag">Windows Server</span><span class="tech-tag">Debian</span><span class="tech-tag">Proxmox VE</span><span class="tech-tag">Active Directory</span><span class="tech-tag">Docker</span><span class="tech-tag">PowerShell</span><span class="tech-tag">GLPI</span></div>
+            </div>
+            <div class="skill-category">
+                <div class="skill-cat-icon net">&#127760;</div>
+                <h3>Réseaux</h3>
+                <p>Architecture et optimisation d'infrastructures réseau IP. Configuration des services essentiels et haute disponibilité.</p>
+                <div class="tech-tags"><span class="tech-tag">VLAN</span><span class="tech-tag">VPN</span><span class="tech-tag">DNS / DHCP</span><span class="tech-tag">pfSense</span><span class="tech-tag">HAProxy</span><span class="tech-tag">CARP</span><span class="tech-tag">Tailscale</span><span class="tech-tag">WireGuard</span></div>
+            </div>
+            <div class="skill-category">
+                <div class="skill-cat-icon sec">&#128274;</div>
+                <h3>Cybersécurité</h3>
+                <p>Audit de vulnérabilités, pentesting, détection d'incidents et réponse SOC. Conformité RGPD et standards ISO.</p>
+                <div class="tech-tags"><span class="tech-tag">Pentesting</span><span class="tech-tag">SIEM</span><span class="tech-tag">Suricata / Snort</span><span class="tech-tag">Zabbix</span><span class="tech-tag">Hardening</span><span class="tech-tag">HTTPS / TLS</span><span class="tech-tag">ISO 27001</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+        <div class="section-header">
+            <div class="section-label">Parcours</div>
+            <h2 class="section-title">Expériences professionnelles</h2>
+            <p class="section-subtitle">Alternance, stage et formations qui ont forgé mon profil technique.</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item"><div class="timeline-card">
+                <div class="timeline-header"><div><div class="timeline-role">Analyste du Centre des Opérations de Sécurité</div><div class="timeline-company">Derichebourg Environnement — Stage</div></div><span class="timeline-date">Janv. — Fév. 2026</span></div>
+                <p class="timeline-desc">Intégré au SOC de Derichebourg Environnement, j'ai contribué à la supervision et à l'analyse des événements de sécurité. Détection d'incidents, analyse de logs via SIEM, durcissement (Hardening) des systèmes, corrélation d'événements et automatisation via scripts Python et Bash pour l'extraction d'indicateurs de compromission (IoC).</p>
+                <div class="tech-tags"><span class="tech-tag">SOC</span><span class="tech-tag">SIEM</span><span class="tech-tag">Blue Team</span><span class="tech-tag">Hardening</span><span class="tech-tag">Python</span><span class="tech-tag">Analyse de logs</span></div>
+            </div></div>
+            <div class="timeline-item"><div class="timeline-card">
+                <div class="timeline-header"><div><div class="timeline-role">Étudiant BTS SIO SISR — Cybersécurité & Infrastructures</div><div class="timeline-company">ESUP</div></div><span class="timeline-date">Sept. 2025 — Août 2026</span></div>
+                <p class="timeline-desc">Deuxième année de BTS SIO spécialisée en cybersécurité et infrastructures réseaux. Conception d'architectures résilientes, pentesting et gouvernance de la sécurité des SI (GRC).</p>
+                <div class="tech-tags"><span class="tech-tag">Cybersécurité</span><span class="tech-tag">Haute Disponibilité</span><span class="tech-tag">Pentesting</span><span class="tech-tag">GRC</span></div>
+            </div></div>
+            <div class="timeline-item"><div class="timeline-card">
+                <div class="timeline-header"><div><div class="timeline-role">Technicien Vidéosurveillance et Développeur Web</div><div class="timeline-company">Nova-IP (camera-videosurveillance.fr) — Alternance</div></div><span class="timeline-date">Sept. 2024 — Août 2025</span></div>
+                <p class="timeline-desc">Installation, configuration et maintenance de systèmes de vidéosurveillance IP (Dahua, Hikvision, Milesight). Administration réseau, paramétrage NVR, support technique et formation des utilisateurs.</p>
+                <div class="tech-tags"><span class="tech-tag">Vidéosurveillance IP</span><span class="tech-tag">Réseau</span><span class="tech-tag">NVR</span><span class="tech-tag">VPN</span><span class="tech-tag">Support technique</span></div>
+            </div></div>
+            <div class="timeline-item"><div class="timeline-card">
+                <div class="timeline-header"><div><div class="timeline-role">Étudiant BTS SIO SISR — 1<sup>ère</sup> année</div><div class="timeline-company">Ingetis</div></div><span class="timeline-date">Sept. 2024 — Août 2025</span></div>
+                <p class="timeline-desc">Fondamentaux en administration systèmes et réseaux, virtualisation, scripting et gestion d'infrastructures.</p>
+                <div class="tech-tags"><span class="tech-tag">Windows Server</span><span class="tech-tag">Linux</span><span class="tech-tag">Active Directory</span><span class="tech-tag">TCP/IP</span></div>
+            </div></div>
+            <div class="timeline-item"><div class="timeline-card">
+                <div class="timeline-header"><div><div class="timeline-role">Stagiaire Observation — Réseaux Neuronaux</div><div class="timeline-company">Amazon Web Services (AWS)</div></div><span class="timeline-date">Fév. — Mars 2019</span></div>
+                <p class="timeline-desc">Initiation au Machine Learning, Deep Learning et infrastructure cloud AWS. Découverte de la robotique industrielle.</p>
+                <div class="tech-tags"><span class="tech-tag">AWS</span><span class="tech-tag">Machine Learning</span><span class="tech-tag">Cloud</span></div>
+            </div></div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+        <div class="section-header">
+            <div class="section-label">Réalisations</div>
+            <h2 class="section-title">Projets professionnels</h2>
+            <p class="section-subtitle">Cliquez sur le bouton PDF pour consulter le dossier technique de chaque projet.</p>
+        </div>
+        <div class="projects-grid">
+            <!-- Health4All -->
+            <div class="project-card featured">
+                <span class="project-status status-done">&#10003; Projet E4</span>
+                <h3>Projet Health4All — Infrastructure Haute Disponibilité</h3>
+                <div class="project-year">Épreuve E4 — Bloc 2 — Session 2026</div>
+                <p>Refonte complète de l'infrastructure d'un prestataire de services de santé. Cluster Proxmox VE, pfSense CARP, AD répliqué, Docker, VPN Tailscale, supervision Zabbix et conformité HDS/RGPD.</p>
+                <div class="project-footer">
+                    <div class="project-competences">
+                        <span class="competence-badge">A2.1</span><span class="competence-badge">A2.2</span><span class="competence-badge">A2.3</span>
+                        <span class="competence-badge">Proxmox</span><span class="competence-badge">pfSense</span><span class="competence-badge">Docker</span><span class="competence-badge">Tailscale</span>
+                    </div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('Health4All.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- Pentest -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Pentest Cybersécurité & Mise en place de pare-feu</h3>
+                <div class="project-year">ESUP — 2025-2026</div>
+                <p>Pentest et sécurisation réseau en environnement virtualisé. pfSense, règles NAT, ACL, VLANs et test d'intrusion interne/externe.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">B1.4.2</span><span class="competence-badge">pfSense</span><span class="competence-badge">Pentesting</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('pentest-pfsense.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- Windows Server -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Installation et Configuration de Windows Server</h3>
+                <div class="project-year">2025</div>
+                <p>Déploiement de Windows Server 2019. Active Directory, DNS, DHCP, GPO et intégration de postes clients au domaine.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">B1.1.2</span><span class="competence-badge">B1.2.1</span><span class="competence-badge">AD</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_a9b9444e97cf40508d348a435b3528e6.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- pfSense -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Mise en place d'un pare-feu pfSense</h3>
+                <div class="project-year">2025</div>
+                <p>pfSense pour le routage et la sécurité LAN/WAN. NAT, DHCP, règles de filtrage et tests de connectivité.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">B1.4.2</span><span class="competence-badge">pfSense</span><span class="competence-badge">NAT</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_a9b9444e97cf40508d348a435b3528e6.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- Debian -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Installation et configuration d'un serveur Debian 13</h3>
+                <div class="project-year">2025</div>
+                <p>Administration d'un serveur Debian avec SSH, Apache2, Samba, FTP. Gestion des utilisateurs et accès à distance.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">B1.1.2</span><span class="competence-badge">Debian</span><span class="competence-badge">Apache</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_c892fc6aaf4047608bc062c9ddc2a987.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- GLPI -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Déploiement de GLPI</h3>
+                <div class="project-year">2025</div>
+                <p>GLPI sur environnement LAMP. Gestion des utilisateurs, du matériel et des tickets d'incidents.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">B1.1.1</span><span class="competence-badge">GLPI</span><span class="competence-badge">LAMP</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_8c4dd1ebaddf42d7becd6ea186303c0f.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- Zabbix -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Supervision réseau avec Zabbix</h3>
+                <div class="project-year">2025</div>
+                <p>Déploiement de Zabbix sous Debian avec MariaDB. Supervision CPU, mémoire, réseau. Alertes automatiques.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">B1.1.4</span><span class="competence-badge">Zabbix</span><span class="competence-badge">Monitoring</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_62dfa140111b4cb6a513979e64ab3ee4.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+            <!-- Vidéosurveillance -->
+            <div class="project-card">
+                <span class="project-status status-done">&#10003; Terminé</span>
+                <h3>Installation de systèmes de vidéosurveillance IP</h3>
+                <div class="project-year">2024 — 2025</div>
+                <p>Systèmes IP (Dahua, Hikvision, Milesight). Paramétrage caméras, NVR et supervision SmartPSS.</p>
+                <div class="project-footer">
+                    <div class="project-competences"><span class="competence-badge">Vidéosurveillance</span><span class="competence-badge">Réseau IP</span></div>
+                    <a href="#" class="btn-pdf" onclick="openPdf('videosurveillance-ip.pdf');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Voir le PDF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+<section class="section" id="certifications">
+    <div class="section-header">
+        <div class="section-label">Certifications</div>
+        <h2 class="section-title">Certifications obtenues</h2>
+    </div>
+    <div class="certs-grid">
+        <div class="cert-card" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_89ea140026bc478bbd77c213942f4750.pdf')" style="cursor: pointer;">
+            <div class="cert-icon anssi">A</div>
+            <div>
+                <div class="cert-name">Cybersécurité — SecNumacadémie</div>
+                <div class="cert-org">ANSSI</div>
+                <div class="cert-date">Décembre 2024</div>
+            </div>
+        </div>
+
+        <div class="cert-card" onclick="openPdf('https://be2aad27-e4e8-4bc9-9c1c-5763534259a6.filesusr.com/ugd/b81a3d_d0120bd0f7534a099c587027eaa4e5c5.pdf')" style="cursor: pointer;">
+            <div class="cert-icon cnil">C</div>
+            <div>
+                <div class="cert-name">Atelier RGPD</div>
+                <div class="cert-org">CNIL</div>
+                <div class="cert-date">Octobre 2024</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- VEILLE TECHNOLOGIQUE -->
+    <section class="section" id="veille">
+        <div class="section-header">
+            <div class="section-label">Veille</div>
+            <h2 class="section-title">Veille technologique</h2>
+            <p class="section-subtitle">Flux RSS dynamiques — actualisés en temps réel via l'API rss2json.</p>
+        </div>
+        <div class="veille-content">
+            <div class="veille-desc">
+                <h3>Ma démarche de veille</h3>
+                <p>Je maintiens une veille technologique active et structurée via l'agrégation de flux RSS. Cette approche me permet de suivre l'actualité cybersécurité, les alertes critiques et les évolutions des outils que j'administre au quotidien.</p>
+                <p>Les articles ci-contre sont chargés dynamiquement depuis les flux RSS de mes sources de référence. Ils se mettent à jour automatiquement à chaque visite.</p>
+                <h3 style="margin-top:1.5rem;">Thématiques suivies</h3>
+                <div class="tech-tags" style="margin-top:0.75rem;">
+                    <span class="tech-tag">Cybersécurité</span><span class="tech-tag">Vulnérabilités & CVE</span>
+                    <span class="tech-tag">Infrastructure réseau</span><span class="tech-tag">Virtualisation</span>
+                    <span class="tech-tag">Cloud Computing</span><span class="tech-tag">RGPD & Conformité</span>
+                    <span class="tech-tag">DevOps & Conteneurs</span>
+                </div>
+                <h3 style="margin-top:1.5rem;">Sources RSS</h3>
+                <div style="margin-top:0.75rem; display:grid; gap:0.5rem;">
+                    <div style="display:flex;align-items:center;gap:8px;"><span class="rss-dot" style="background:#f59e0b"></span><span style="font-size:0.88rem;font-weight:500;">CERT-FR (ANSSI)</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><span class="rss-dot" style="background:#3b82f6"></span><span style="font-size:0.88rem;font-weight:500;">The Hacker News</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><span class="rss-dot" style="background:#22c55e"></span><span style="font-size:0.88rem;font-weight:500;">Bleeping Computer</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><span class="rss-dot" style="background:#ef4444"></span><span style="font-size:0.88rem;font-weight:500;">Le Monde Informatique</span></div>
+                </div>
+            </div>
+            <div class="rss-feed-live" id="rssFeed">
+                <div class="rss-loading"><span class="spinner"></span>Chargement des flux RSS...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SYNTHESE -->
+<section class="section" id="synthese">
+    <div class="section-header">
+        <div class="section-label">Synthèse</div>
+        <h2 class="section-title">Tableau de synthèse — Épreuve E4</h2>
+        <p class="section-subtitle">Correspondance entre les compétences du référentiel BTS SIO et les réalisations professionnelles. <span style="color:var(--accent-light);font-weight:600;">✕</span> = compétence mobilisée.</p>
+    </div>
+
+    <div class="synthese-wrapper">
+        <table class="synthese-table">
+            <thead>
+                <tr>
+                    <th style="min-width:280px;text-align:left;">Réalisation professionnelle</th>
+                    <th>Période</th>
+                    <th title="Gérer le patrimoine informatique">Gérer le patrimoine</th>
+                    <th title="Répondre aux incidents et demandes">Incidents & demandes</th>
+                    <th title="Développer la présence en ligne">Présence en ligne</th>
+                    <th title="Travailler en mode projet">Mode projet</th>
+                    <th title="Mettre à disposition un service informatique">Mise à dispo. service</th>
+                    <th title="Organiser son développement professionnel">Dév. professionnel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bloc-header"><td colspan="8">Réalisations en cours de formation</td></tr>
+                <tr><td>Installation et configuration Windows Server 2019 (AD, DNS, DHCP, GPO)</td><td>2025</td><td class="check">&#10005;</td><td></td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Configuration pare-feu et routage avec pfSense</td><td>2025</td><td class="check">&#10005;</td><td></td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Serveur Debian : Apache, Samba, FTP, SSH</td><td>2025</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Déploiement GLPI + MariaDB</td><td>2025</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Supervision réseau Zabbix</td><td>2025</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td></tr>
+                <tr><td>Pentest cybersécurité & mise en place de pare-feu</td><td>2025-2026</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td></tr>
+                <tr style="background: rgba(var(--accent-rgb), 0.05);"><td><strong>Projet E4 :</strong> Cluster Proxmox VE, AD répliqué, Docker</td><td>2026</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td></tr>
+                <tr style="background: rgba(var(--accent-rgb), 0.05);"><td><strong>Projet E4 :</strong> pfSense CARP, HTTPS/TLS, VPN Tailscale</td><td>2026</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td></tr>
+                <tr style="background: rgba(var(--accent-rgb), 0.05);"><td><strong>Projet E4 :</strong> Supervision Zabbix, sauvegarde PBS, IDS</td><td>2026</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td class="check">&#10005;</td></tr>
+                
+                <tr><td>Portfolio BTS SIO & profil LinkedIn</td><td>2025-2026</td><td></td><td></td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td></tr>
+                <tr><td>Veille technologique (flux RSS, CERT-FR, etc.)</td><td>2024-2026</td><td></td><td></td><td></td><td></td><td></td><td class="check">&#10005;</td></tr>
+
+                <tr class="bloc-header"><td colspan="8">Réalisations en milieu professionnel — 1<sup>ère</sup> année (Nova-IP, alternance)</td></tr>
+                <tr><td>Assistance réseau</td><td>2024/2025</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>Administration systèmes et réseaux</td><td>2024/2025</td><td class="check">&#10005;</td><td></td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Paramétrage à distance (VPN, accès distants)</td><td>2024/2025</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Interventions support / réseau / matériel</td><td>2024/2025</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Installation vidéosurveillance IP (Dahua, Hikvision)</td><td>2024/2025</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td></tr>
+
+                <tr class="bloc-header"><td colspan="8">Réalisations en milieu professionnel — 2<sup>ème</sup> année (Derichebourg, stage SOC)</td></tr>
+                <tr><td>Supervision & analyse SOC (SIEM, logs, alertes)</td><td>Janv.-Fév. 2026</td><td class="check">&#10005;</td><td class="check">&#10005;</td><td></td><td></td><td></td><td class="check">&#10005;</td></tr>
+                <tr><td>Durcissement systèmes (Hardening)</td><td>Janv.-Fév. 2026</td><td class="check">&#10005;</td><td></td><td></td><td></td><td class="check">&#10005;</td><td></td></tr>
+                <tr><td>Automatisation scripts Python/Bash (IoC)</td><td>Janv.-Fév. 2026</td><td></td><td class="check">&#10005;</td><td></td><td class="check">&#10005;</td><td class="check">&#10005;</td><td class="check">&#10005;</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="synthese-download">
+        <a href="tb_synthèse.pdf" download>&#128196; Télécharger le tableau de synthèse (.xlsx)</a>
+    </div>
+</section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-nav">
+                <a href="#hero">Accueil</a><a href="#about">Profil</a><a href="#experience">Expériences</a>
+                <a href="#projects">Réalisations</a><a href="#certifications">Certifications</a>
+                <a href="#veille">Veille</a><a href="#synthese">Synthèse</a>
+            </div>
+            <p class="footer-info">
+                Adam Nassir — BTS SIO SISR Session 2026 — ESUP<br>
+                <a href="mailto:nassir.zad@gmail.com">nassir.zad@gmail.com</a> &middot;
+                <a href="https://www.linkedin.com/in/adam-nassir-9104b4327/" target="_blank">LinkedIn</a>
+            </p>
+            <p class="footer-info" style="margin-top:0.75rem;">&copy; 2026 Adam Nassir &middot; Portfolio</p>
+        </div>
+    </footer>
+
+    <script>
+    // ═══ THEME TOGGLE ═══
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) { html.setAttribute('data-theme', saved); toggle.textContent = saved === 'light' ? '☾' : '☀'; }
+    toggle.addEventListener('click', () => {
+        const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        toggle.textContent = next === 'light' ? '☾' : '☀';
+    });
+
+    // ═══ HAMBURGER ═══
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+
+    // ═══ ACTIVE NAV ═══
+    const sections = document.querySelectorAll('section[id], .hero[id]');
+    const navItems = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(s => { if (scrollY >= s.offsetTop - 100) current = s.id; });
+        navItems.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+        document.getElementById('navbar').style.boxShadow = scrollY > 50 ? '0 4px 20px rgba(0,0,0,0.15)' : 'none';
+    });
+
+    // ═══ PDF VIEWER ═══
+    function openPdf(url) {
+        const overlay = document.getElementById('pdfOverlay');
+        document.getElementById('pdfFrame').src = url;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    document.getElementById('pdfClose').addEventListener('click', () => {
+        document.getElementById('pdfOverlay').classList.remove('active');
+        document.getElementById('pdfFrame').src = '';
+        document.body.style.overflow = '';
+    });
+    document.getElementById('pdfOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) { document.getElementById('pdfClose').click(); }
+    });
+
+    // ═══ DYNAMIC RSS FEEDS ═══
+    const RSS_FEEDS = [
+        { name: 'CERT-FR', url: 'https://www.cert.ssi.gouv.fr/feed/', color: '#f59e0b' },
+        { name: 'The Hacker News', url: 'https://feeds.feedburner.com/TheHackersNews', color: '#3b82f6' },
+        { name: 'Bleeping Computer', url: 'https://www.bleepingcomputer.com/feed/', color: '#22c55e' },
+        { name: 'Le Monde Informatique', url: 'https://www.lemondeinformatique.fr/flux-rss/thematique/securite/rss.xml', color: '#ef4444' },
+    ];
+    const RSS_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+    async function loadRssFeeds() {
+        const container = document.getElementById('rssFeed');
+        let allArticles = [];
+
+        const promises = RSS_FEEDS.map(feed =>
+            fetch(RSS_API + encodeURIComponent(feed.url))
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'ok' && data.items) {
+                        data.items.slice(0, 4).forEach(item => {
+                            allArticles.push({
+                                title: item.title,
+                                link: item.link,
+                                date: item.pubDate,
+                                source: feed.name,
+                                color: feed.color
+                            });
+                        });
+                    }
+                })
+                .catch(() => {})
+        );
+
+        await Promise.all(promises);
+
+        // Sort by date descending
+        allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (allArticles.length === 0) {
+            container.innerHTML = '<div class="rss-loading">Impossible de charger les flux RSS. Vérifiez votre connexion internet.</div>';
+            return;
+        }
+
+        container.innerHTML = allArticles.slice(0, 12).map(a => {
+            const date = new Date(a.date);
+            const dateStr = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+            return `<a href="${a.link}" target="_blank" class="rss-article">
+                <div class="rss-article-source"><span class="rss-dot" style="background:${a.color}"></span><span>${a.source}</span></div>
+                <div class="rss-article-title">${a.title}</div>
+                <div class="rss-article-date">${dateStr}</div>
+            </a>`;
+        }).join('');
+    }
+
+    loadRssFeeds();
+    </script>
+</body>
+</html>
